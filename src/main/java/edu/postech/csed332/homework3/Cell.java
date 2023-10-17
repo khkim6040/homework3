@@ -2,7 +2,7 @@ package edu.postech.csed332.homework3;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
+import java.util.*;
 
 /**
  * A cell that has a number and a set of possibilities. A cell may have a number of observers,
@@ -10,12 +10,20 @@ import java.util.Optional;
  */
 public class Cell extends Subject {
     //TODO: add private members variables and private methods as needed
-
+    int number;
+    Set<Integer> possibilities;
+    List<Group> groups;
     /**
      * Creates an empty cell with a given type. Initially, no number is assigned.
      */
     public Cell() {
         //TODO: implement this
+        number = 0;
+        possibilities = new HashSet<>();
+        for (int i = 1; i <= 9; i++) {
+            possibilities.add(i);
+        }
+        groups  = new ArrayList<>();
     }
 
     /**
@@ -26,6 +34,9 @@ public class Cell extends Subject {
     @NotNull
     public Optional<Integer> getNumber() {
         //TODO: implement this
+        if(number != 0) {
+            return Optional.of(number);
+        }
         return Optional.empty();
     }
 
@@ -38,6 +49,11 @@ public class Cell extends Subject {
      */
     public boolean setNumber(int number) {
         //TODO: implement this
+        if(this.number == 0 && possibilities.contains(number)) {
+            this.number = number;
+            notifyObservers(new NumberEvent(number, true));
+            return true;
+        }
         return false;
     }
 
@@ -49,6 +65,11 @@ public class Cell extends Subject {
      */
     public boolean unsetNumber() {
         //TODO: implement this
+        if(this.number != 0) {
+            notifyObservers(new NumberEvent(number, false));
+            this.number = 0;
+            return true;
+        }
         return false;
     }
 
@@ -59,8 +80,8 @@ public class Cell extends Subject {
      */
     public void addGroup(@NotNull Group group) {
         addObserver(group);
-
         //TODO: implement this
+        groups.add(group);
     }
 
     /**
@@ -71,7 +92,7 @@ public class Cell extends Subject {
      */
     public boolean containsPossibility(int n) {
         //TODO: implement this
-        return false;
+        return possibilities.contains(n);
     }
 
     /**
@@ -81,7 +102,7 @@ public class Cell extends Subject {
      */
     public boolean hasNoPossibility() {
         //TODO: implement this
-        return false;
+        return possibilities.isEmpty();
     }
 
     /**
@@ -93,6 +114,16 @@ public class Cell extends Subject {
      */
     public void addPossibility(int number) {
         //TODO: implement this
+        for(Group g : groups) {
+            if (!g.isAvailable(number)) {
+                return;
+            }
+        }
+        boolean flag = possibilities.isEmpty();
+        possibilities.add(number);
+        if(flag) {
+            notifyObservers(new ActivationEvent(true));
+        }
     }
 
     /*
@@ -103,5 +134,11 @@ public class Cell extends Subject {
      */
     public void removePossibility(int number) {
         //TODO: implement this
+        if(possibilities.contains(number)) {
+            possibilities.remove(number);
+            if(possibilities.isEmpty()) {
+                notifyObservers(new ActivationEvent(false));
+            }
+        }
     }
 }
