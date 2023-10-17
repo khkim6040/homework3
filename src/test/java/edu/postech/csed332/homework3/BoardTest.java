@@ -61,18 +61,18 @@ public class BoardTest {
         assertFalse(cell.hasNoPossibility());
     }
 
-//    @Test
-//    void testGameSetNumbers() {
-//        var board = new Board(GameInstanceFactory.createGameInstance());
-//        assertTrue(board.getCell(1,1).setNumber(5));
-//        assertTrue(board.getCell(4,4).setNumber(1));
-//        assertTrue(board.getCell(5,5).setNumber(9));
-//        assertTrue(board.getCell(6,6).hasNoPossibility());
-//        assertTrue(board.getCell(1,1).unsetNumber());
-//        assertTrue(board.getCell(6,6).hasNoPossibility());
-//        assertTrue(board.getCell(5,5).unsetNumber());
-//        assertFalse(board.getCell(6,6).hasNoPossibility());
-//    }
+    @Test
+    void testGameSetNumbers() {
+        var board = new Board(GameInstanceFactory.createGameInstance());
+        assertTrue(board.getCell(1,1).setNumber(5));
+        assertTrue(board.getCell(4,4).setNumber(1));
+        assertTrue(board.getCell(5,5).setNumber(9));
+        assertTrue(board.getCell(6,6).hasNoPossibility());
+        assertTrue(board.getCell(1,1).unsetNumber());
+        assertTrue(board.getCell(6,6).hasNoPossibility());
+        assertTrue(board.getCell(5,5).unsetNumber());
+        assertFalse(board.getCell(6,6).hasNoPossibility());
+    }
 
     @Test
     void testCellSetNumberShouldSetNumberWhenNumberIsUnsigned() {
@@ -159,5 +159,44 @@ public class BoardTest {
         // If cell2 does not have a number 5, cell1 should have 5 as a possibility
         cell2.unsetNumber();
         assertTrue(cell1.containsPossibility(5));
+    }
+
+    @Test
+    void testBoardConstruction() {
+        Board board = new Board(GameInstanceFactory.createGameInstance());
+        assertEquals(9, board.cells.length);
+        assertEquals(9, board.horizontalGroups.size());
+        assertEquals(9, board.verticalGroups.size());
+        assertEquals(9, board.blockGroups.size());
+        assertEquals(2, board.diagonalGroups.size());
+    }
+
+    @Test
+    void testBoardSetNumbers() {
+        Board board = new Board(GameInstanceFactory.createGameInstance());
+        assertTrue(board.getCell(1,1).setNumber(5));
+        assertTrue(board.getCell(4,4).setNumber(1));
+        assertTrue(board.getCell(5,5).setNumber(9));
+        assertTrue(board.getCell(6,6).hasNoPossibility());
+        assertTrue(board.getCell(1,1).unsetNumber());
+        assertTrue(board.getCell(6,6).hasNoPossibility());
+        assertTrue(board.getCell(5,5).unsetNumber());
+        assertFalse(board.getCell(6,6).hasNoPossibility());
+    }
+
+    @Test
+    void testBoardGetCell() {
+        Board board = new Board(GameInstanceFactory.createGameInstance());
+        Cell cell = board.getCell(1, 1);
+        // According to GameInstanceFactory's example data
+        assertFalse(cell.containsPossibility(1));
+        assertFalse(cell.containsPossibility(2));
+        assertFalse(cell.containsPossibility(3));
+        assertFalse(cell.containsPossibility(4));
+        assertTrue(cell.containsPossibility(5));
+        assertFalse(cell.containsPossibility(6));
+        assertFalse(cell.containsPossibility(7));
+        assertTrue(cell.containsPossibility(8));
+        assertFalse(cell.containsPossibility(9));
     }
 }
