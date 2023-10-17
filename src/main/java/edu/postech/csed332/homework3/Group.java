@@ -2,9 +2,7 @@ package edu.postech.csed332.homework3;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A group that observes a set of cells, and maintains the invariant: if one
@@ -13,12 +11,13 @@ import java.util.Set;
  */
 public class Group implements Observer {
     //TODO: add private member variables and methods as necessary
-
+    List<Cell> cells;
     /**
      * Creates an empty group.
      */
     Group() {
         //TODO: implement this
+        cells = new ArrayList<>();
     }
 
     /**
@@ -28,6 +27,7 @@ public class Group implements Observer {
      */
     void addCell(@NotNull Cell cell) {
         //TODO: implement this
+        cells.add(cell);
     }
 
     /**
@@ -38,7 +38,12 @@ public class Group implements Observer {
      */
     public boolean isAvailable(int number) {
         //TODO: implement this
-        return false;
+        for (Cell cell : cells) {
+            if (cell.getNumber().isPresent() && cell.getNumber().get() == number) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -53,5 +58,18 @@ public class Group implements Observer {
     @Override
     public void update(@NotNull Subject caller, @NotNull Event arg) {
         //TODO: implement this
+        if (arg instanceof NumberEvent numberEvent) {
+            int number = numberEvent.number();
+            boolean isSet = numberEvent.set();
+            if (isSet) {
+                for (Cell cell : cells) {
+                    cell.removePossibility(number);
+                }
+            } else {
+                for (Cell cell : cells) {
+                    cell.addPossibility(number);
+                }
+            }
+        }
     }
 }
