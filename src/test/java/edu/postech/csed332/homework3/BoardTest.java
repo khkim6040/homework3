@@ -188,7 +188,8 @@ public class BoardTest {
     void testBoardGetCell() {
         Board board = new Board(GameInstanceFactory.createGameInstance());
         Cell cell = board.getCell(1, 1);
-        // According to GameInstanceFactory's example data
+        // According to GameInstanceFactory's example data,
+        // Cell (1, 1) could only have 5 and 8 as possibilities.
         assertFalse(cell.containsPossibility(1));
         assertFalse(cell.containsPossibility(2));
         assertFalse(cell.containsPossibility(3));
