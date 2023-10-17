@@ -113,6 +113,51 @@ public class BoardTest {
 
     @Test
     void testCellAddPossibilityShouldNotAddPossibilityWhenNumberIsSignedInAnotherGroup() {
-        // TODO: implement this After implementing Group
+        Cell cell1 = new Cell();
+        Cell cell2 = new Cell();
+        Group group = new Group();
+        cell1.addGroup(group);
+        cell2.addGroup(group);
+        group.addCell(cell1);
+        group.addCell(cell2);
+        cell1.setNumber(5);
+        cell2.addPossibility(5);
+        assertFalse(cell2.containsPossibility(5));
+    }
+
+    @Test
+    void testGroupAddCell() {
+        Group group = new Group();
+        Cell cell = new Cell();
+        group.addCell(cell);
+        assertTrue(group.cells.contains(cell));
+    }
+
+    @Test
+    void testGroupIsAvailable() {
+        Group group = new Group();
+        Cell cell = new Cell();
+        group.addCell(cell);
+        assertTrue(group.isAvailable(5));
+        cell.setNumber(5);
+        assertFalse(group.isAvailable(5));
+    }
+
+    @Test
+    void testGroupUpdate() {
+        Group group = new Group();
+        Cell cell1 = new Cell();
+        Cell cell2 = new Cell();
+        group.addCell(cell1);
+        group.addCell(cell2);
+        cell1.addGroup(group);
+        cell2.addGroup(group);
+        assertTrue(cell1.containsPossibility(5));
+        // If cell2 has a number 5, cell1 should not have 5 as a possibility
+        cell2.setNumber(5);
+        assertFalse(cell1.containsPossibility(5));
+        // If cell2 does not have a number 5, cell1 should have 5 as a possibility
+        cell2.unsetNumber();
+        assertTrue(cell1.containsPossibility(5));
     }
 }
