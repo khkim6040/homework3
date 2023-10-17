@@ -63,10 +63,16 @@ public class Group implements Observer {
             boolean isSet = numberEvent.set();
             if (isSet) {
                 for (Cell cell : cells) {
+                    if (cell == caller) {
+                        continue;
+                    }
                     cell.removePossibility(number);
                 }
             } else {
                 for (Cell cell : cells) {
+                    if (cell == caller) {
+                        continue;
+                    }
                     cell.addPossibility(number);
                 }
             }
