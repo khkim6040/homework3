@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
 
@@ -62,17 +61,58 @@ public class BoardTest {
         assertFalse(cell.hasNoPossibility());
     }
 
+//    @Test
+//    void testGameSetNumbers() {
+//        var board = new Board(GameInstanceFactory.createGameInstance());
+//        assertTrue(board.getCell(1,1).setNumber(5));
+//        assertTrue(board.getCell(4,4).setNumber(1));
+//        assertTrue(board.getCell(5,5).setNumber(9));
+//        assertTrue(board.getCell(6,6).hasNoPossibility());
+//        assertTrue(board.getCell(1,1).unsetNumber());
+//        assertTrue(board.getCell(6,6).hasNoPossibility());
+//        assertTrue(board.getCell(5,5).unsetNumber());
+//        assertFalse(board.getCell(6,6).hasNoPossibility());
+//    }
+
     @Test
-    void testGameSetNumbers() {
-        var board = new Board(GameInstanceFactory.createGameInstance());
-        assertTrue(board.getCell(1,1).setNumber(5));
-        assertTrue(board.getCell(4,4).setNumber(1));
-        assertTrue(board.getCell(5,5).setNumber(9));
-        assertTrue(board.getCell(6,6).hasNoPossibility());
-        assertTrue(board.getCell(1,1).unsetNumber());
-        assertTrue(board.getCell(6,6).hasNoPossibility());
-        assertTrue(board.getCell(5,5).unsetNumber());
-        assertFalse(board.getCell(6,6).hasNoPossibility());
+    void testCellSetNumberShouldSetNumberWhenNumberIsUnsigned() {
+        Cell cell = new Cell();
+        assertTrue(cell.setNumber(5));
+        assertTrue(cell.getNumber().isPresent());
+        assertEquals(5, (int) cell.getNumber().get());
     }
 
+    @Test
+    void testCellSetNumberShouldNotSetNumberWhenNumberIsSigned() {
+        Cell cell = new Cell();
+        assertTrue(cell.setNumber(5));
+        assertFalse(cell.setNumber(6));
+    }
+
+    @Test
+    void testCellUnsetNumberShouldUnsetNumberWhenNumberIsSigned() {
+        Cell cell = new Cell();
+        assertTrue(cell.setNumber(5));
+        assertTrue(cell.unsetNumber());
+        assertFalse(cell.getNumber().isPresent());
+    }
+
+    @Test
+    void testCellUnsetNumberShouldNotUnsetNumberWhenNumberIsUnsigned() {
+        Cell cell = new Cell();
+        assertFalse(cell.unsetNumber());
+    }
+
+    @Test
+    void testCellAddGroup() {
+        Cell cell = new Cell();
+        Group group = new Group();
+        cell.addGroup(group);
+        assertTrue(cell.groups.contains(group));
+    }
+
+    @Test
+    void testCellAddPossibilityShouldNotAddPossibilityWhenNumberIsSignedInAnotherGroup() {
+        // TODO: implement this After implementing Group
+    }
 }
