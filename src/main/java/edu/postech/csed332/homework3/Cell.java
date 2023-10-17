@@ -66,8 +66,9 @@ public class Cell extends Subject {
     public boolean unsetNumber() {
         //TODO: implement this
         if(this.number != 0) {
-            notifyObservers(new NumberEvent(number, false));
+            int number = this.number;
             this.number = 0;
+            notifyObservers(new NumberEvent(number, false));
             return true;
         }
         return false;
