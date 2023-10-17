@@ -30,8 +30,8 @@ public class Cell extends Subject {
     }
 
     /**
-     * Sets a number of this cell and notifies a SetNumberEvent, provided that the cell has previously no number
-     * and the given number to be set is in the set of possibilities.
+     * Sets a number of this cell and notifies NumberEvent(number, true), provided that the cell has
+     * previously no number and the given number to be set is in the set of possibilities.
      *
      * @param number the number
      * @return true if the number is set
@@ -42,7 +42,8 @@ public class Cell extends Subject {
     }
 
     /**
-     * Removes the number of this cell and notifies an UnsetNumberEvent, provided that the cell has a number.
+     * Removes the number of this cell and notifies NumberEvent(number, false), provided that the cell
+     * has a number.
      *
      * @return true if the number is removed
      */
@@ -96,6 +97,7 @@ public class Cell extends Subject {
 
     /*
      * Remove the possibility of a given number, and notify ActivationEvent(false) if the set of
+     * possibilities becomes empty.
      *
      * @param number the number
      */
