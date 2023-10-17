@@ -38,6 +38,25 @@ public class GameUI {
 
         //TODO: implement this. Create cells and squares, to add them to top, and to
         // define layouts for them.
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                boolean isDiagonal = (i == j) || (i + j == 8);
+                Cell cell = board.getCell(i + 1, j + 1);
+                CellUI cellUI = new CellUI(cell, isDiagonal);
+                cells[i][j] = cellUI;
+                top.add(cells[i][j]);
+
+                int squareRow = i / 3;
+                int squareCol = j / 3;
+                if (squares[squareRow][squareCol] == null) {
+                    squares[squareRow][squareCol] = new JPanel();
+                    squares[squareRow][squareCol].setLayout(new GridLayout(3, 3));
+                }
+                squares[squareRow][squareCol].add(cellUI);
+                top.add(squares[squareRow][squareCol]);
+
+            }
+        }
     }
 
 }

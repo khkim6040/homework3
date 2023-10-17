@@ -3,6 +3,8 @@ package edu.postech.csed332.homework3;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 
 public class CellUI extends JTextField implements Observer {
@@ -15,6 +17,36 @@ public class CellUI extends JTextField implements Observer {
             //TODO: whenever the content is changed, cell.setNumber() or cell.unsetNumber()
             // is accordingly invoked. You may use an action listener, a key listener, a
             // document listener, etc.
+            getDocument().addDocumentListener(new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    String text = getText();
+                    if (text.length() == 1) {
+                        int number = Integer.parseInt(text);
+                        if (cell.setNumber(number)) {
+                            setForeground(Color.BLUE);
+                        } else {
+                            setForeground(Color.RED);
+                        }
+                    }
+                    else {
+                        setForeground(Color.RED);
+                    }
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    String text = getText();
+                    if (text.isEmpty()) {
+                        cell.unsetNumber();
+                        setForeground(Color.BLACK);
+                    }
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                }
+            });
         }
     }
 
@@ -28,6 +60,9 @@ public class CellUI extends JTextField implements Observer {
     @Override
     public void update(@NotNull Subject caller, @NotNull Event arg) {
         //TODO: implement this
+        if (arg instanceof ActivationEvent activationEvent) {
+            setActivated(activationEvent.activated());
+        }
     }
 
     /**
